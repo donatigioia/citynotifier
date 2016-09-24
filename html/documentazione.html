@@ -1,0 +1,212 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title> Documentazione </title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> <!--INCLUSIONE JQUERY!-->
+<!-- inclusione libreria bootstrap!-->
+<link rel="stylesheet" type="text/css" media="all" href="dist/css/bootstrap.css"></link>
+<link rel="stylesheet" type="text/css" media="all" href="dist/css/bootstrap-theme.css"></link>
+<link rel="stylesheet" type="text/css" media="all" href="css/classi.css"></link>
+
+        <link rel="icon" href="http://ltw1326.web.cs.unibo.it/img.ico" />
+<script type="text/javascript" src="dist/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="js/login.js"></script> <!--PER IL LOGIN!-->
+<meta name="viewport" content="width=device-width, initial-scale=1"> <!-- serve per adattamento del layout mobile-->
+</head>
+<body>
+
+                        <!-- navbar bootstrap !-->
+	<div class="navbar navbar-fixed-top navbar-default navbar-margin">
+		<div class="container-fluid">
+                                        <div class="navbar-header">
+                                                <a class="navbar-brand" href="index.html">CityNotifier - Documentazione</a>
+                                        </div>
+		</div>  <!--chiuso container-fluid-->
+	</div>
+<br>
+<br>
+<br>
+	<div class="container">		
+		<h1>Documentazione per il progetto City Notifier - Gruppo "Mellon"</h1>
+		<br>
+		<h2>0. Introduzione</h2>
+		<p>L'applicazione CityNotifier è stata realizzata da <b>Danilo Berardinelli</b>, <b>Gioia Donati</b>, <b>Francesca Legari</b> e <b>Stefano Mezza</b>,tenendo conto delle specifiche fornite a lezione e del protocollo CityNotifier 1.1 realizzato dal WG estivo.
+		Abbiamo cercato di attenerci a tali linee guida (sia per la parte server che per quella client) quanto più possibile, prendendo delle libertà implementative quando necessario e ponendo enfasi sull'interoperabilità tra i vari server e sulla divisione tra aspetto implementativo e presentazionale, mirata a creare un sistema allo stesso tempo intuitivo e funzionale</p>
+		<br>
+		<h2>1. Applicazione client</h2>
+		<br>
+		<h3>1.1 File del client e struttura generale</h3>
+		<br>
+		<p> Il client è composto da due file principali contenenti il codice HTML, <b>index.html</b> e <b>mainpage.php</b>. 
+		<br>
+		<p>Il primo contiene una semplice maschera di login, più un'immagine di intestazione e un breve tutorial introduttivo per il sito.
+			Come da specifiche e da protocollo, non abbiamo inserito opzioni per la registrazione, ma ci siamo limitati a gestire semplicemente il login/logout in un database predefinito di utenti.
+			Il file mainpage.php contiene il codice HTML principale del progetto, inclusa la mappa, le tabelle e la navbar con le varie funzionalità di CityNotifier.
+			Il javascript del progetto è contenuto nei file <b>login.js/logout.js</b>, <b>mapHandler.js</b>, <b>support.js</b> e <b>global.js</b>, contenenti, rispettivamente, il codice per il login/logout, per la gestione dell'API di Google Maps, le varie funzioni di supporto e le variabili globali del progetto.
+Un ulteriore file js, <b>index.js</b>, si occupa di gestire le news interattive dell'index.
+			Il CSS del progetto è contenuto nel file <b>classi.css</b>. Alcune regole CSS sono state infine inserite o modificate nei file bootstrap.css e bootstrap-theme.css</p>
+		<br>
+		<h3>1.2 API di Google Maps</h3>
+		<br>
+		<p>Nucleo centrale del lato client del progetto è l'API di Google Maps, che abbiamo utilizzato sia per le funzioni di GeoLocalizzazione che per la creazione di una mappa interattiva su cui posizionare i vari eventi.
+			Le funzioni per la gestione della mappa si trovano nel file <b>mapHandler.js</b> e sono state realizzate cercando di mantenere quanto più alta possibile la coesione dei vari metodi realizzati.
+			La gestione della mappa è riassumibile nei seguenti passaggi:</p>
+			<ul>
+				<li>Creazione della mappa e geolocalizzazione dell'utente</li>
+				<li>Gestione del marker iniziale</li>
+				<li>Gestione dei marker per gli eventi</li>
+				<li>Gestione delle infoWindow</li>
+			</ul>
+		<br>
+		<h4><b>1.2.1 Creazione della mappa e geolocalizzazione dell'utente</b></h4>
+			<p>Appena viene caricato il codice HTML di mainpage.php viene chiamata la funzione <b>initialize()</b>, che si occupa di iniziallizzare la mappa e di salvarla nella variabile globale <b>map</b>
+				Di default la mappa viene creata con zoom di 15 e viene centrata nell'ultima posizione segnalata dall'utente (se disponibile) o al centro di bologna.
+				Dopo la creazione della mappa e del relativo marker viene fatta la geolocalizzazione dell'utente che, se completata con successo, posiziona il centro della mappa
+				e il relativo marker nella posizione rilevata.</p>
+			<br>
+		<h4><b>1.2.2 Gestione del marker iniziale</b></h4>
+		<p>Il marker iniziale è memorizzato in una variabile globale chiamata <b>positionMarker</b>.
+		Viene creato assieme alla mappa e, come già illustrato, assume l'ultima posizione segnalatta dell'utente (il centro di Bologna se questa non è disponibile) per poi essere spostato in caso di geolocalizzazione.
+		Al marker iniziale sono associati una semplice infowindow e una serie di listener, che abbiamo utilizzato per aggiornare la posizione della ricerca e della segnalazione quando il marker viene spostato.
+		Per facilitare l'utilizzo della mappa abbiamo fatto in modo che la mappa venga nuovamente centrata nella posizione del marker se questo viene spostato, e abbiamo aggiunto la possibilità di richiamare il marker in un punto della mappa con il tasto destro del mouse.</p>
+		<br>
+		<h4><b>1.2.3 Gestione dei marker per gli eventi</b></h4>
+		<p>I marker per gli eventi sono memorizzati nell'array globale <b>markers[]</b>.
+		Ogni tipo di evento ha un marker diverso con un diverso colore, in modo da rendere quanto più leggibili gli eventi sulla mappa.
+		I vari marker possiedono come proprietà l'id, il tipo e il sottotipo dell'evento corrispondente (utili per il javascript) e un'infowindow che si apre quando vengono cliccati e che da maggiori informazioni sull'evento, nonché la possibilità di notificarne lo stato. <i>(vedi 2.2.4)</i>
+		Quando viene effettuata la ricerca iniziale di eventi locali e remoti, i markers locali vengono aggiornati da quelli remoti in caso di corrispondenza, in modo da non dover ricreare l'intero array due volte.</p>
+		<br>
+		<h4><b>1.2.4 Gestione delle infowindow</b></h4>
+		<p>Ogni marker sulla mappa (incluso quello iniziale) ha un'infowindow che ne espande le funzionalità.
+		Nel caso del marker iniziale si tratta semplicemente di un popup informativo.
+		Nel caso dei marker per gli eventi, invece, l'infowindow contiene, oltre alle informazioni sull'evento, l'interfaccia necessaria per notificare lo stato di quell'evento.
+		Tale interfaccia consiste in una textarea per inviare descrizioni aggiuntive e in tre tasti per segnalare lo stato: <b>open</b>, <b>closed</b> e <b>archived</b>.
+		</p>
+		<br>
+		<h3>1.3 Richieste AJAX e comunicazione con il server</h3>
+		<p>Le funzionalità principali di CityNotifier sono la ricerca di eventi, la segnalazione e la notifica.
+		Per ognuna di queste funzionalità è presente un opportuna chiamata AJAX allo script server-side che implementa tali funzioni e un'opportuna gestione della risposta dal server.
+		</p>
+		<br>
+		<h4><b>1.3.1 Ricerca di eventi</b></h4>
+		<p>La ricerca di eventi viene effettuata mediante una maschera di ricerca che permette di specificare il tipo e sottotipo desiderato (con la possibilità di selezionarli tutti), il raggio di ricerca e il valore minimo di freshness desiderato, settando gli opportuni campi del JSON di invio come da protocollo.
+		Poiché abbiamo ritenuto poco utile specificare una valore massimo di freshness, tale valore corrisponde sempre al timestamp attuale.
+		La risposta del server comporta il riempimento della tabella e la comparsa dei markers per gli eventi sulla mappa.
+		Dopo il caricamento della pagina vengono effettuate in automatico due particolari richieste, locale e remota, con raggio di 2km e timemin uguale a 24 ore fa. Tali richieste sono contenute nella funzione <b>initial_query()</b></p>
+		<p>
+		<b>Nota:</b> per evitare conflitti tra le varie richieste di eventi remoti (che hanno un timeout di 5 secondi) è stato inserito un meccanismo di concorrenza attraverso delle variabili globali che vengono opportunamente settate ad ogni richiesta: se ci si accorge che c'è stata una richiesta ajax più recente, quella attuale viene scartata.
+		</p>
+		<br>
+		<h4><b>1.3.2 Segnalazione di Eventi</b></h4>
+		<p>La Segnalazione di eventi viene effettuata attraverso l'opportuna maschera di segnalazione, che permette di specificare un tipo e un sottotipo per l'evento segnalato e di aggiungere una breve descrizione.
+		I dati della segnalazione vengono catturati da uno script javascript che esegue l'opportuna richiesta AJAX e, in caso di successo, esegue la funzione initial_query(), che mostra il nuovo evento ricaricando l'array di eventi.</p>
+		<br>
+		<h4><b>1.3.3 Notifica di Eventi</b></h4>
+		<p>La notifica di eventi avviene attraverso una semplice maschera di notifica, presente nell'infowindow dell'evento di cui si vuole notificare lo stato.
+		E' possibile notificare lo stato come open, close e archived, quest'ultima opzione accessibile unicamente agli utenti speciali.
+		Per notificare un evento abbiamo apportato alcune modifiche al JSON previsto dal protocollo: nello specifico abbiamo aggiunto il tipo/sottotipo dell'evento e la sua posizione, in modo da permettere, nel caso di eventi remoti, l'inserimento nel nostro server.
+		</p>
+		<br>
+		<h3> 1.4 Gestione degli errori e delle notifiche</h3>
+		<p>Abbiamo gestito i vari errori nelle operazioni di invio/ricezione e notifica attraverso i div di "warning" e di "success" di bootstrap.
+		I vari div di errore vengono creati nel file <b>mainpage.php</b> e al caricamento della pagina sono nascosti da uno script JQuery.
+		In caso di notifica all'utente, il rispettivo div (identificato da un ID) viene attivato e, dopo due secondi, viene disattivato utilizzando una semplice funzione javascript.</p>
+		</p>
+		<br>
+		<h3> 1.5 Grafica</h3>
+			<p>
+				Per la parte grafica del progetto ci siamo appoggiati al framework Boostrap 3, che ci ha permesso di realizzare un'interfaccia utente intuitiva e user-friendly mantenendo uno stile grafico gradevole e uniforme. 
+				Le librerie di bootstrap sono poi state modificate in modo da adattarsi alle nostre scelte stilistiche e combinate con stili CSS scritti da noi per l'occasione.
+			</p>
+		<b> 1.5.1 Grafica Desktop </b>
+			<p>
+				La grafica della versione desktop è stata realizzata mediante un layout a blocchi, con un div contenente la navbar delle opzioni e un altro div contenente la mappa di google.
+La tabella è stata implementata attraverso un overlay che oscura la pagina e mostra in sovraimpressione la tabella contente gli eventi. Inoltre è stata creata una seconda tabella per gli eventi archiviati.
+				Le infowindow sono state realizzate mediante il layout a colonne di CSS3, modificando ove necessario le opzioni di stile preimpostate da Google.
+				Le notifiche di errore sono state realizzate con gli alert "danger" e "success" di Bootstrap, e arricchite con un effetto di fade-in/fade-out attraverso JQuery.
+				Il calendario è un'applicazione javascript che abbiamo trovato su GitHub. Il codice originale (pensato per Bootstrap2) è stato da noi adattato per essere compatibile con Bootstrap 3.
+				L'index.html del sito è stato impostato con un'immagine di intestazione e  3 pannelli informativi che mostrano i 3 eventi più recenti di bologna presenti nel database locale con il loro rispettvo tipo ,sottotipo ,affidabilità e indirizzo.
+                A fine pagina abbiamo un footer contenente due link per la documentazione e per un breve tutorial.
+				I marker per gli eventi e l'immagine dell'index sono stati da noi realizzati in Photoshop.
+			</p>
+		<br>
+		<h4><b>1.5.2 Grafica Mobile</b></h4>
+			<p>
+				Per la parte mobile del sito ci siamo affidati al layout responsive di Bootstrap, aggiungendo alcune Media Query e adattando alcuni accorgimenti per ragioni di compatibilità e funzionalità del client.
+				Nello specifico, abbiamo impostato il div della mappa per adattarsi all'utilizzo su mobile aggiungendo un margine sinistro e destro, utili per lo scroll della pagina.
+				Le infowindow sono state rese più compatte ed essenziali mediante una media query che elimina le descrizioni e la textarea.
+				Parte del testo della navbar è stato impostato per cambiare colore in versione mobile attraverso una Media Query: questo ha permesso di avere scritte chiare e leggibili sia per la versione Desktop che per quella mobile.
+				I vari menu sono stati riadattati attraverso il bottone di collapse di Bootstrap.	
+			</p>
+		<br>
+		<h3> 2. Applicazione server</h3> 
+		<p>Abbiamo deciso di realizzare l'applicazione server basandoci su un Database SQL, scelta che ci ha permesso di gestire la memorizzazione e l'accorpamento di eventi e notifiche in maniera efficiente e comoda. Il server è stato realizzato tenendo conto dell'interoperabilità richiesta dalle specifiche, ed è stato pensato per rispondere alle richieste del protocollo attraverso un'opportuna configurazione di Apache.
+		</p>
+		<br>	
+		<h3>2.1 File del server e struttura generale</h3>
+		<p>
+		L'applicazione server viene implementata da 5 script PHP:
+		<ul>
+			<li><b>Segnala.php</b> - che si occupa di gestire la funzione di segnalazione di eventi</li>
+			<li><b>Ricezione.php</b> - che gestisce la richiesta di eventi da parte del client</li>
+			<li><b>Multireq.php</b> - che gestisce le richieste di eventi remoti ritornando al client gli eventi di tutti i server della rete di CityNotifier </li>
+			<li><b>Notifica.php</b> - che gestisce le funzionalità di notifica dello stato di un evento</li>
+			<li><b>Aggiornamento.php</b> - che gestisce varie funzioni di supporto, tra cui lo sbiadimento di eventi.
+		</ul>
+			Il server si completa con i due file <b>util.php</b> e <b>data.php</b> che contengono, rispettivamente, altre funzioni di supporto e i dati globali del server.
+		</p>
+		<br>
+		<h3>2.2 Funzionalità del server</h3>
+		<h4><b>2.2.1 Segnalazione</b></h4>
+		<p>
+			Lo script di segnalazione recupera i dati della segnalazione dal JSON di invio.
+			Successivamente controlla se quei dati corrispondono ad un evento presente nel DB e, nel caso, accorpa la notifica a quell'evento.
+			L'accorpamento procede recuperando nel DB tutte le notifiche del tipo/sottotipo segnalato e recuperando dall'apposito database il raggio di accorpamento per quel sottotipo.
+			Successivamente viene cercata la notifica più vicina alla posizione segnalata dal client e, se tale notifica rientra nel raggio di accorpamento, la notifica arrivata viene aggiunta all'evento corrispondente.
+			In caso contrario viene creato un nuovo evento avente come prima notifica quella segnalata.
+			Ogni inserimento modifica la reliability dell'evento secondo le specifiche del protocollo.
+			Nel caso in cui la notifica venga accorpata ad un evento con cui è in conflitto, quell'evento viene reso skeptical.
+			Dopo che un evento skeptical è stato segnalato un certo numero di volte (7 di default), a seconda del numero di segnalazioni aperte/chiuse l'evento viene sistemato e la reputation degli utenti che hanno segnalato viene modificata opportunamente.
+			Abbiamo infine inserito un controllo anti-flood, che impedisce agli utenti di notificare più volte lo stato di un evento skeptical, al fine di evitare la possibilità di aumentare la propria reputazione illegittimamente.
+		</p>
+		<h4><b>2.2.2 Richiesta di eventi locali</b></h4>
+		<p>
+			Lo script di richiesta eventi locali è molto semplice: recuperati i dati della richiesta del client, viene effettuata una ricerca sul database degli eventi che rispettino i parametri di richiesta e viene creato un opportuno JSON di risposta.
+			La richiesta si occupa anche di gestire lo sbiadimento di eventi: ogni volta che la freshness di un evento è inferiore a 20 minuti prima del momento attuale, l'evento viene chiuso come da protocollo.
+		</p>
+		<h4><b>2.2.3 Richiesta di eventi remoti</b></h4>
+		<p>
+			Quando il server riceve una richiesta remote effettua due operazioni.
+			La prima consiste nel chiamare il file delle richieste locali per recuperare gli eventi del DB locale.
+			La seconda consiste nell'effettuare chiamate locali agli altri server della rete di CityNotifier (con un timeout di 5 secondi) e scartare le risposte vuote o che non rispettano i parametri del protocollo.
+			Gli eventi remoti che non sono stati scartati vengono poi confrontati con quelli locali e, se possibile, accorpati.
+			L'insieme degli eventi remoti e degli eventi locali (eventualmente modificati) viene poi restituito al client.
+		</p>
+		<h4><b>2.2.4 Notifica di eventi</b></h4>
+		<p>
+			La notifica dello stato di un evento viene gestita in maniera diversa a seconda che l'evento sia effettivamente presente nel proprio Database locale oppure no.
+			Nel primo caso la notifica viene accorpata (secondo l'algoritmo di accorpamento descritto in  2.2.1), e memorizzata nel database.
+			Nel caso in cui l'evento non sia disponibile, invece, viene creato un nuovo evento (utilizzando le informazioni aggiuntive inserite nel JSON di notifica) con tali parametri e la notifica ricevuta diventa la prima notifica dell'evento.
+			Abbiamo inserito un controllo sulla posizione dell'utente, come da protocollo, impedendo di notificare eventi troppo distanti dalla propria posizione.
+		</p>
+		<br>
+		<h3>2.3 Sbiadimento e archiviazione</h3>
+		<p>
+			Come già anticipato, gli eventi vengono chiusi dopo 20 minuti dall'ultima segnalazione.
+			E' inoltre possibile, per un gruppo di utenti autorizzati, archiviare un evento in modo che sia completamente eliminato dal sistema, e rimanga nel database soltanto per eventuali consultazioni di sistema.
+			Per ragioni di praticità, abbiamo ritenuto di spostare ad archived tutti gli eventi che sono stati segnalati come "chiusi" da più di una settimana e per cui, in questo arco di tempo, non si sono più ricevute notizie.
+			In questo modo garantiamo che eventi completamente nuovi aperti non risultino skeptical perché in conflitto con eventi del passato.
+		</p>
+		<br>
+		<h2>3. Compatibilità tra browser</h2>
+		<p>Il nostro client è stato testato su tutti i browser principali (Chrome, Explorer, Safari, Opera e Firefox) e funziona su ognuno di essi, al meno di dettagli minori.
+			Un noto bug di intercompatibilità tra Firefox e Bootstrap 3 provoca la comparsa di un errore di JQuery nella console quando viene cliccata la mappa.
+			Tale errore non infligge comunque la stabilità e la funzionalità del sito.
+			La versione mobile del client è stata testata su Google Chrome Mobile per Android e non ha riscontrato errori di sorta nelle varie funzionalità implementate.
+		</p>
+		<br>
+	</div>
+</body>
+</html>

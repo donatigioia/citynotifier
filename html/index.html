@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title> Login </title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> <!--INCLUSIONE JQUERY!-->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+<!-- inclusione libreria bootstrap!-->
+<link rel="stylesheet" type="text/css" media="all" href="css/classi.css"></link>
+<link rel="stylesheet" type="text/css" media="all" href="dist/css/bootstrap.css"></link>
+<link rel="stylesheet" type="text/css" media="all" href="dist/css/bootstrap-theme.css"></link>
+
+
+       	<link rel="icon" href="http://ltw1326.web.cs.unibo.it/img.ico" />
+<script type="text/javascript" src="dist/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="js/login.js"></script> 
+<script type="text/javascript" src="js/global.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+</head>
+
+        <body>
+
+                  <!-- Inizio navbar -->
+                        <div class="navbar navbar-default navbar-margin">
+                                <div class="container-fluid">
+                                        <div class="navbar-header">
+                                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navmobile">
+                                                        <span class="icon-bar"></span>
+                                                        <span class="icon-bar"></span>
+                                                        <span class="icon-bar"></span>
+                                                </button>
+                                                <a class="navbar-brand" href="#">CityNotifier</a>
+                                        </div>
+                                        <div class="navbar-collapse collapse" id="navmobile">
+                                                <form class="navbar-form navbar-right navbar-index" role="Login">                            
+							<div class="form-group">
+                                                                <input type="text" id="username" class="form-control" placeholder="Username">
+                                        		</div>
+                                                        <div class="form-group">
+                                                                <input type="password" id="password" class="form-control" placeholder="Password">
+                                                        </div>
+                                               		<button type="button" id="loginForm" class="btn btn-success">Dite amici ed entrate</button>
+                                                </form>
+                                        </div>  
+                                </div>  
+                        </div>
+		<!--fine navbar -->
+		<!--alert errore login -->
+                                <div class="alert alert-danger button-errore" id="errlogin">
+                                  	<strong>Errore:</strong> Utente non trovato o password errata
+                                </div>
+		<!-- immagine heading -->
+                         <div>				
+                                        <img src="provaindice5.jpg" class="img-responsive container"  alt="immagine Responsive"/>
+			 </div>
+			 <div class="newstitolo" id="newstitolo"><h2>Le ultime notizie da Bologna</h2></div>
+			
+			<!-- ultime notizie -->
+		
+			<div class="container">
+				<center>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="newsinfo" id="newsinfo1">
+								<span id="rep1" class="affidabilitaScore"><center><span></span></center></span>
+								<h3 id="news1"></h3>
+								<p><small><b id="subnews1"> </b> in <span id="addr1"> ....</span></small></p>
+								<div><img id="img1" alt="immagine Responsive" class="img-rounded img-responsive"></div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="newsinfo" id="newsinfo2">
+								<span id="rep2" class="affidabilitaScore"><center><span></span></center></span>
+								<h3 id="news2"></h3>
+								<p><small><b id="subnews2"></b> in <span id="addr2"> ....</span></small></p>
+								<div><img id="img2" alt="immagine Responsive" class="img-rounded img-responsive"></div>
+
+							</div>
+						</div>
+						<div class="col-md-4" id="newsinfo3">
+							<div class="newsinfo">
+								<span id="rep3" class="affidabilitaScore"><center><span></span></center></span>
+								<h3 id="news3"></h3>
+								<p><small><b id="subnews3"></b> in <span id="addr3"> ....</span></small></p>
+								<div><img id="img3" alt="immagine Responsive" class="img-rounded img-responsive"></div>
+							</div>
+						</div>
+					</div>
+				</center>
+			</div>
+			<br>
+	<!--footer -->
+			
+				<div class="navbar navbar-default navbar-margin ">
+					<div class="navbar-inner">						
+						<ul class="nav">
+							<div class="pull-right navbar-btn">
+								<li><a class="btn btn-info" href="/tutorial.html" target="_blank">Tutorial</a></li>
+								<li><a class="btn btn-info" href="/documentazione.html" target="_blank">Documentazione</a></li>
+							</div>
+						</ul>
+						
+					</div>			
+				</div>
+			
+	<!-- fine footer-->
+	</body>
+</html>
