@@ -1,0 +1,132 @@
+//css per tutti gli style
+
+
+
+.tutorial
+{
+	text-align:center;
+	color:black;
+	font-size:40px;
+}
+
+.tutorial-footer
+{
+	text-align:center;
+	color:white;
+	font-size:20px;
+	margin-top:10px
+}
+
+.tutorial-titolo
+{
+	color: black;	
+}
+
+.tutorial-testo
+{
+	text-align:center;
+	color:black;
+}
+
+.tutorial-testo2
+{
+	text-align:left;
+	color:black;
+}
+
+.navbar-index
+{
+	margin-right:1cm;
+}
+
+.tutorial-paragrafo
+{
+	margin-top:50px;
+}
+
+.tutorial-paragrafo2
+{
+	color:white;
+	margin-top:150px;
+}
+
+.tutorial-paragrafo3
+{
+	color:#eeeeee;
+	margin-top:20px;
+	text-align:left;
+}
+
+
+.tutorial-sfondo
+{
+	background-color:#eeeeee;	
+}
+
+.button-errore
+{
+	position:absolute;
+	bottom:50%;
+	right:38%;
+}
+
+.err404
+{
+	text-align:center;
+}
+
+.center 
+{
+     float: none;
+     margin-left: auto;
+     margin-right: auto;
+}
+
+.centerimg 
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tutorial-img
+{
+	width: 70%; 
+	display:block; 
+	margin: 0 auto;
+}
+
+.errori
+{
+	position:absolute;
+	bottom:50%;
+	right:38%;
+}
+
+.mappa
+{
+	width:100%;
+	height:100%;
+	position:relative;
+}
+// per overlay
+.hide{ display: none;}
+.close-overlay{ position: absolute; right: 1%; top: 1%; font-size: 30px; cursor: pointer;}
+.trg-overlay{ background: #fff; position: absolute; z-index: 800; padding: 15px; overflow: hidden; }
+.small{ width: 40%; }
+.standard{ width: 60%; }
+.big{ width: 70%; }
+.overlay{
+display: none;
+background:#000;
+position:fixed;
+top:0px;
+bottom:0px;
+left:0px;
+right:0px;
+z-index:600;
+cursor:pointer;
+width: 100%; height: 100%;
+}
+.trg-modal-header{ border-bottom: 1px solid #d2d2d2; padding: 0px; margin: 15px 0px;}
+
